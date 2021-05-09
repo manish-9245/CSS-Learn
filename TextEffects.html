@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Effects</title>
+    <style>
+        .bluebox{
+            background-color:#0674E7;
+            color: white;
+            width: auto;
+            height:50px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .bluebox:hower{
+            overflow: visible;
+        }
+        .yellowbox{
+            background-color: #f7f707;
+            height:100px;
+            width:400px;
+            /*word-break:break-all;*/
+            /*word break:keep all->ensures no line breakes*/
+            word-wrap: break-word;
+        }
+        .greenbox{
+            height:75px;
+            background-color: rgb(25, 240, 79);
+        }
+        .great{
+            background-color: rgb(220, 255, 239);
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="bluebox">
+        FacebookFacebookFacebookFacebookFacebook
+        FacebookFacebookFacebookFacebookFacebookFacebookFacebook
+        FacebookFacebookFacebookFacebookFacebookFacebookFacebookFacebookFacebook
+        FacebookFacebookFacebookFacebook
+        FacebookFacebookFacebookFacebook
+    </div>
+        <div class="yellowbox">
+        <p>AppleAppleAppleAppleAppleAppleAppleAppleApple
+        Loooooooooooooooooooooooooooong AppleAppleAppleAppleAppleAppleAppleApple
+        Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooong AppleAppleAppleAppleAppleAppleAppleApple
+        AppleAppleAppleAppleAppleAppleAppleAppleApple
+        AppleAppleAppleAppleAppleAppleAppleAppleAppleApple</p></div>
+        
+        <div class="greenbox">
+        <p>Microsoft</p>
+        </div>
+</body>
+</html>

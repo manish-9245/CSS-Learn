@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Positioning</title>
+    <style>
+        .bluebox{
+            background-color:#0674E7;
+            color: white;
+            width: auto;
+            height:100px;    
+            position: fixed;    
+            top:30px;
+            left:200px;  
+            z-index: 1;
+        }
+        .yellowbox{
+            background-color: #f7f707;
+            height:100px;
+            position: relative;
+            top:20px;
+            left:20px;
+            z-index: 2;
+        }
+        .greenbox{
+            height:75px;
+            background-color: rgb(25, 240, 79);
+            position: absolute;
+            top:30px;
+            left:15px;
+        }
+        /*If element doesnt have z index,the element described in the last will be shown up*/
+        .great{
+            background-color: rgb(220, 255, 239);
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p class="bluebox">Facebook is <span class="great">great</span></p>
+        <p class="yellowbox">Apple</p>
+        <p class="greenbox">Microsoft</p>
+    </div>
+</body>
+</html>
