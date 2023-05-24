@@ -1,3 +1,85 @@
+import streamlit as st
+import pandas as pd
+import sqlite3
+import matplotlib.pyplot as plt
+
+# Create a SQLite database
+conn = sqlite3.connect(':memory:')
+cursor = conn.cursor()
+
+# Create a table in the database
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS reliability_data (
+        id INTEGER PRIMARY KEY,
+        datetime DATETIME,
+        field1 INTEGER,
+        field2 INTEGER,
+        field3 INTEGER,
+        field4 INTEGER,
+        field5 INTEGER,
+        field6 INTEGER,
+        field7 INTEGER,
+        field8 INTEGER,
+        field9 INTEGER,
+        field10 INTEGER
+    )
+''')
+conn.commit()
+
+# Generate and populate data in the table
+data = []
+for i in range(100):
+    row = (
+        pd.Timestamp('2023-05-23') + pd.Timedelta(days=i),
+        *[random.randint(1, 100) for _ in range(10)]
+    )
+    data.append(row)
+cursor.executemany('INSERT INTO reliability_data VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?)', data)
+conn.commit()
+
+# Function to run SQL query and return a pandas dataframe
+def run_query(query):
+    df = pd.read_sql_query(query, conn)
+    return df
+
+# Streamlit app
+st.title("Reliability Data Analysis")
+
+# Display the data as a pandas dataframe
+st.subheader("Data")
+query = 'SELECT * FROM reliability_data'
+df = run_query(query)
+st.dataframe(df)
+
+# SQL query input box and button
+st.subheader("Run SQL Query")
+user_query = st.text_area("Enter your SQL query", height=100)
+if st.button("Run Query"):
+    output_df = run_query(user_query)
+    st.dataframe(output_df)
+
+    # Visualize the output dataframe
+    st.subheader("Data Visualization")
+    selected_columns = st.multiselect("Select columns for visualization", output_df.columns)
+    if selected_columns:
+        plt.figure(figsize=(10, 6))
+        for column in selected_columns:
+            plt.plot(output_df['datetime'], output_df[column], label=column)
+        plt.xlabel("Datetime")
+        plt.ylabel("Values")
+        plt.title("Data Visualization")
+        plt.legend()
+        st.pyplot()
+
+# Store the executed queries
+queries = st.session_state.get("queries", [])
+queries.append(user_query)
+st.session_state["queries"] = queries
+
+# Display the executed queries
+st.subheader("Executed Queries")
+for query in queries:
+    st.code(query, language="sql")
 
 
 
