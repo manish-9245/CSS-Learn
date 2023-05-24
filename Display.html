@@ -37,6 +37,86 @@ query = st.text_area("Enter SQL query:")
 if st.button("Run Query"):
     try:
         query_result = pd.read_sql_query(query, conn)
+        query_result["Timestamp"] = pd.to_datetime(query_result["Timestamp"])
+        query_results.append(query_result)
+        query_list.append(query)
+        st.success("Query executed successfully!")
+    except Exception as e:
+        st.error(f"Error: {str(e)}")
+
+# Display query results
+if len(query_results) > 0:
+    st.write("Query Results")
+    for i, result in enumerate(query_results):
+        st.write(f"**Query {i + 1}:** `{query_list[i]}`")
+        st.dataframe(result, height=200, width=800)
+
+# Visualization
+if len(query_results) > 0:
+    st.write("Visualizations")
+    selected_query = st.selectbox("Select query:", query_list)
+    selected_result = query_results[query_list.index(selected_query)]
+
+    # Select x-axis field (Timestamp)
+    x_axis_field = "Timestamp"
+
+    # Select y-axis fields
+    available_fields = [field for field in selected_result.columns if field != x_axis_field]
+    selected_fields = st.multiselect("Select y-axis fields:", available_fields, default=available_fields)
+
+    if selected_fields:
+        chart_data = selected_result[[x_axis_field] + selected_fields]
+        chart_data = chart_data.set_index(x_axis_field)
+        st.line_chart(chart_data, use_container_width=True)
+
+
+
+
+
+
+
+
+
+
+import streamlit as st
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+import sqlite3
+
+# Generate realistic time series data with non-negative values
+np.random.seed(0)
+num_rows = 1000
+start_date = datetime(2023, 1, 1)
+end_date = start_date + timedelta(hours=num_rows - 1)
+timestamps = pd.date_range(start_date, end_date, freq='H')
+num_fields = 10
+data = pd.DataFrame(np.abs(np.random.randn(num_rows, num_fields)),
+                    index=timestamps,
+                    columns=["CPU Usage (%)", "Memory Usage (%)",
+                             "Network Throughput (Mbps)",
+                             "Disk Latency (ms)", "Request Latency (ms)",
+                             "Error Rate (%)", "Server Load (%)",
+                             "Response Time (ms)", "Availability (%)",
+                             "CPU Temperature (°C)"])
+
+# Create an in-memory SQLite database
+conn = sqlite3.connect(":memory:")
+data.to_sql("data", conn)
+
+# Display initial DataFrame
+st.write("Initial Data")
+st.dataframe(data)
+
+# Query execution and visualization
+query_list = []
+query_results = []
+
+# Query input box
+query = st.text_area("Enter SQL query:")
+if st.button("Run Query"):
+    try:
+        query_result = pd.read_sql_query(query, conn)
         query_result["timestamp"] = pd.to_datetime(query_result["timestamp"])
         query_result.set_index("timestamp", inplace=True)
         query_results.append(query_result)
