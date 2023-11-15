@@ -1,8 +1,5 @@
 <ul>
-        {[...(new Set(userDetails.authorities
-          .map(authority => authority.role.toLowerCase())
-          .filter(role => role.includes('operate') || role.includes('admin') || role.includes('support'))
-        ))].map((role, index) => (
+        {[...(new Set(userDetails.authorities.reduce((acc, { role }) => (role.toLowerCase().match(/^\w+/)?.[0] ? acc.add(role) : acc), new Set())))].map((role, index) => (
           <li key={index}>{role}</li>
         ))}
       </ul>
