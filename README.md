@@ -1,18 +1,18 @@
 # CSS-Learn
 Files from Udemy Web Dev Course
-const InactivityPopup = () => {
+- 
   const [inactiveTime, setInactiveTime] = useState(0);
   const popupTimeout = 2 * 60 * 1000; // 2 minutes in milliseconds
 
   useEffect(() => {
-    const resetTimer = () => {
-      clearTimeout(inactiveTime);
-      setInactiveTime(setTimeout(showPopup, popupTimeout));
-    };
+    let timeoutId;
 
-    const showPopup = () => {
-      // Display your popup here
-      alert('Hey there! You have been inactive for more than 2 minutes.');
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        // Display your popup here
+        alert('Hey there! You have been inactive for more than 2 minutes.');
+      }, popupTimeout);
     };
 
     const handleUserActivity = () => {
@@ -28,8 +28,8 @@ const InactivityPopup = () => {
 
     // Cleanup function to remove event listeners and clear timeout on unmounting
     return () => {
-      clearTimeout(inactiveTime);
+      clearTimeout(timeoutId);
       window.removeEventListener('mousemove', handleUserActivity);
       window.removeEventListener('keypress', handleUserActivity);
     };
-  }, [inactiveTime]);
+  }, []);
