@@ -1,10 +1,10 @@
-const CookieDeletionComponent = () => {
+const [, , removeCookie] = useCookies(); // Destructure removeCookie function from useCookies hook
+
   const handleDeleteCookie = () => {
-    const cookies = new Cookies();
     const cookieNameToDelete = 'your_cookie_name'; // Replace 'your_cookie_name' with the name of the cookie you want to delete
     const expirationDate = moment().subtract(1, 'days').toDate();
-    
-    cookies.set(cookieNameToDelete, '', { expires: expirationDate });
+
+    removeCookie(cookieNameToDelete, { expires: expirationDate });
   };
 <!DOCTYPE html>
 <html lang="en">
