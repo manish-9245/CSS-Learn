@@ -1,8 +1,27 @@
-<ul>
-        {[...(new Set(userDetails.authorities.reduce((acc, { role }) => (role.toLowerCase().match(/^\w+/)?.[0] ? acc.add(role) : acc), new Set())))].map((role, index) => (
-          <li key={index}>{role}</li>
-        ))}
-      </ul>
+import React from 'react';
+import moment from 'moment';
+
+const deleteCookie = (cookieName) => {
+  const expirationDate = moment().subtract(1, 'days').toDate();
+  document.cookie = `${cookieName}=; expires=${expirationDate.toUTCString()}; path=/;`;
+};
+
+const CookieDeletionComponent = () => {
+  const handleDeleteCookie = () => {
+    const cookieNameToDelete = 'your_cookie_name'; // Replace 'your_cookie_name' with the name of the cookie you want to delete
+    deleteCookie(cookieNameToDelete);
+  };
+
+  return (
+    <div>
+      <h2>Delete Cookie</h2>
+      <button onClick={handleDeleteCookie}>Delete Cookie</button>
+    </div>
+  );
+};
+
+export default CookieDeletionComponent;
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
