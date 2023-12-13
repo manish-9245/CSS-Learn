@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secret Santa Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Secret Santa Generator</h1>
+  <button onclick="generateSecretSanta()">Generate Secret Santa Pairs</button>
+
+  <h2>Secret Santa Pairs:</h2>
+  <ul id="secretSantaPairs"></ul>
+
+  <script>
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function generateSecretSantaPairs(participants) {
+      const shuffledParticipants = [...participants];
+      shuffleArray(shuffledParticipants);
+
+      const pairs = [];
+      for (let i = 0; i < participants.length; i++) {
+        const giver = participants[i];
+        const receiver = shuffledParticipants[(i + 1) % participants.length];
+        pairs.push({ giver, receiver });
+      }
+
+      return pairs;
+    }
+
+    function generateSecretSanta() {
+      const participants = [
+        'Alice',
+        'Bob',
+        'Charlie',
+        'David',
+        'Eve',
+        // Add more participants as needed
+      ];
+
+      const secretSantaPairs = generateSecretSantaPairs(participants);
+      const secretSantaPairsList = document.getElementById('secretSantaPairs');
+      secretSantaPairsList.innerHTML = '';
+
+      secretSantaPairs.forEach(pair => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${pair.giver} will be the Secret Santa for ${pair.receiver}`;
+        secretSantaPairsList.appendChild(listItem);
+      });
+    }
+  </script>
+
+</body>
+</html>
